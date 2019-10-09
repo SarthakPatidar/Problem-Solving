@@ -2,7 +2,7 @@ package hackerEarth.augustEasy19.splitHouses;
 
 import java.util.*;
 
-class splitHouse {
+class SplitHouse {
 	public static void main(String args[]) throws Exception {
 
 		Scanner s = new Scanner(System.in);
