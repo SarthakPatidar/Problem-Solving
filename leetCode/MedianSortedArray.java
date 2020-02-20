@@ -1,51 +1,71 @@
 package leetCode;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class MedianSortedArray {
-	public static void main(String args[]) {
-		Scanner sc = new Scanner(System.in);
+	
+	private static double findMedianSortedArrays(int[] a, int[] b) {
 		
-		int a
+		double median = 0;
+		int n = a.length, m = b.length;
+		int minIndex = 0, maxIndex = n, i = 0, j = 0;
+		
+		while(minIndex <= maxIndex) {
+			i = (minIndex + maxIndex)/2;
+			j = (n + m + 1)/2 - i;
+			
+			if(i < n && j > 0 && b[j-1] > a[i])
+				minIndex = i+1;
+			
+			else if(i > 0 && j < m && a[i-1] > b[j])
+				maxIndex = i-1;
+			
+			/*
+			 * We reach to our goal condition. (as in Notebook)
+			 */
+			else {
+				if(i == 0)
+					median = b[j-1];
+				else if(j == 0)
+					median = a[i-1];
+				else
+					median = Math.max(a[i-1], b[j-1]);
+				
+				break;
+			}
+		}
+		
+		if((n+m) % 2 != 0)
+			return median;
+		else if(i == n)
+			median = (median + b[j])/2;
+		else if(j == m)
+			median = (median + a[i])/2;
+		else
+			median = (median + Math.min(a[i], b[j]))/2;
+		
+		return median;
+	}	
+	
+	public static void main(String args[]) throws IOException {
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		double median = 0;
+		
+		String[] ar1 = br.readLine().split(" ");
+		int[] a = Arrays.stream(ar1).mapToInt(Integer::parseInt).toArray();
+		
+		String[] ar2 = br.readLine().split(" ");
+		int[] b = Arrays.stream(ar2).mapToInt(Integer::parseInt).toArray();	
+		
+		if(a.length < b.length)
+			median = findMedianSortedArrays(a,b);
+		else
+			median = findMedianSortedArrays(b,a);
+		
+		System.out.println("Median of Sorted Arrays = "+ median);
 	}
-}
-
-class Solution {
-  public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-      
-      double med = 0;
-      int pos = (nums1.length + nums2.length)/2;
-      int count = 0, head1 = 0, head2 = 0;
-      
-      if(nums1.length <= 0) {
-          med = nums2[pos] + nums2[pos-1];
-          return med;     
-      }
-
-      if(nums2.length <= 0) {
-          med = nums1[pos] + nums1[pos-1];
-          return med;     
-      }  
-      
-      while(count < pos) {
-          if(nums1[head1] <= nums2[head2]){
-              med = nums1[head1];
-              nums1[head1] = 0;
-              head1 = (head1 < nums1.length) ? head1+1 : head1;
-          }
-          else{
-              med = nums2[head2];
-              nums2[head2] = 0;
-              head2 = (head2 < nums2.length) ? head2+1 : head2;
-          }
-          
-          count++;
-     }
-  
-     int next = Math.min(nums1[head1], nums2[head2]);
-     med = (count % 2 != 0) ? next : (med+next)/2;
-     
-     return med; 
-      
-  }
 }
