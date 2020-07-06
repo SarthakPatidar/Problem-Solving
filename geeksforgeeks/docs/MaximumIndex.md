@@ -1,4 +1,4 @@
-# Maximum Index
+# Maximum Index [[Code]](https://github.com/SarthakPatidar/Problem-Solving/blob/company-wise/geeksforgeeks/src/com/practice/company/google/MaximumIndex.java)
 
 ## Problem Statement
 Given an array arr[], find the maximum j – i such that arr[j] >= arr[i]
